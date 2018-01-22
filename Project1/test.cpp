@@ -28,8 +28,8 @@
 #pragma warning(disable:4996) 
 void menu();
 int input_stu_xinxi();
-/*
 int check_stu_xinxi();
+/*
 int browse_stu_xinxi();
 int revise_stu_xinxi();
 */
@@ -69,9 +69,9 @@ void menu()
 	{	
 		case 0: exit(0); break;
 		case 1: input_stu_xinxi(); break;
+	    case 2: check_stu_xinxi(); break;
 		/*
-	    case 2: browse_stu_xinxi(); break;
-		case 3: check_stu_xinxi(); break;
+		case 3: browse_stu_xinxi(); break;
 		case 4: revise_stu_xinxi(); break;
 		*/
 	}
@@ -88,7 +88,7 @@ int input_stu_xinxi()
 	{
 		struct stu students;
 		FILE *fp;
-		errno_t err= (fopen_s(&fp, "F:\stuinfo.txt", "w+"));
+		errno_t err= (fopen_s(&fp, "F:\stuinfo.txt", "w"));
 		if (err!= 0)
 		{
 			printf("文件打开错误\n");
@@ -98,26 +98,32 @@ int input_stu_xinxi()
 		{
 			printf("\n file write error \n");
 		}
+		/**********文件的写还需要完善************/
 		printf("\t学号:");
 		scanf("%s", students.stu_no);
 		fputs(students.stu_no,fp);
-		/*
 		printf("\t姓名:");
-		scanf("%s", students.name);   
+		scanf("%s", students.name); 
+		fputs(students.name, fp);
 		printf("\t年龄:");
 		scanf("%s", students.age);
+		fputs(students.age, fp);
 		printf("\t性别:");
 		scanf("%s", students.sex);
+		fputs(students.sex, fp);
 		printf("\t出生年月:");
 		scanf("%s", students.birth_date);
+		fputs(students.birth_date, fp);
 		printf("\t地址:");
-		scanf("%s", students.address);  
+		scanf("%s", students.address); 
+		fputs(students.address, fp);
 		printf("\t电话:");
 		scanf("%s", students.phone);
+		fputs(students.phone, fp);
 		printf("\t邮件:");
 		scanf("%s", students.email);
+		fputs(students.email, fp);
 		printf("\n");
-		*/
 		fclose(fp);
 		memset(&students,0x00,sizeof(struct stu));
 		printf("继续输入请按1，返回上级菜单请按2，退出请安0\n");
@@ -137,4 +143,12 @@ int input_stu_xinxi()
 		}
 	}
 	return 0;
+}
+
+int check_stu_xinxi()  
+{
+	struct stu students;
+	FILE *fp;
+	/**明天继续**/
+
 }
