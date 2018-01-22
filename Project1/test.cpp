@@ -24,7 +24,9 @@
 */
 #include<stdio.h>
 #include<stdlib.h>
-void menue();
+#include<string.h>
+#pragma warning(disable:4996) 
+void menu();
 int input_stu_xinxi();
 /*
 int check_stu_xinxi();
@@ -35,7 +37,7 @@ struct stu
 {
 	char stu_no[16];
 	char name[20];
-	char age;
+	char age[2];
 	char sex[2];
 	char birth_date[20];
 	char address[1024];
@@ -44,13 +46,13 @@ struct stu
 };
 int main()
 {
-	menue();
+	menu();
 	getchar();
 	system("pause");
 	return 0;
 }
 
-void menue()
+void menu()
 {
 	int choose;
 	printf("-------------学生信息管理系统-------------\n");
@@ -62,8 +64,9 @@ void menue()
 	printf("------------------------------------------\n");
 	printf("请输入您的选测（0-4）: ");
 	scanf_s("%d", &choose);
+	printf("您的选择：%d\n",choose);
 	switch (choose)
-	{
+	{	
 		case 0: exit(0); break;
 		case 1: input_stu_xinxi(); break;
 		/*
@@ -85,30 +88,53 @@ int input_stu_xinxi()
 	{
 		struct stu students;
 		FILE *fp;
-		fp = fopen("F:\stuinfo.txt", "w+");
-		if (fp == NULL)
+		errno_t err= (fopen_s(&fp, "F:\stuinfo.txt", "w+"));
+		if (err!= 0)
 		{
 			printf("文件打开错误\n");
 			exit(0);
 		}
-		printf("学号:");
-		scanf_s("%s",&students.stu_no);
+		if (fwrite(&students, sizeof(struct stu), 1, fp)!=1)
+		{
+			printf("\n file write error \n");
+		}
+		printf("\t学号:");
+		scanf("%s", students.stu_no);
+		fputs(students.stu_no,fp);
+		/*
 		printf("\t姓名:");
-		scanf_s("%s", &students.name);   
+		scanf("%s", students.name);   
 		printf("\t年龄:");
-		scanf_s("%s", &students.age);
+		scanf("%s", students.age);
 		printf("\t性别:");
-		scanf_s("%s", &students.sex);
+		scanf("%s", students.sex);
 		printf("\t出生年月:");
-		scanf_s("%s", &students.birth_date);
+		scanf("%s", students.birth_date);
 		printf("\t地址:");
-		scanf_s("%s", &students.address);
+		scanf("%s", students.address);  
 		printf("\t电话:");
-		scanf_s("%s", &students.phone);
+		scanf("%s", students.phone);
 		printf("\t邮件:");
-		scanf_s("%s", &students.email);
-		fwrite(&students, sizeof(students), 1, fp);
+		scanf("%s", students.email);
+		printf("\n");
+		*/
 		fclose(fp);
+		memset(&students,0x00,sizeof(struct stu));
+		printf("继续输入请按1，返回上级菜单请按2，退出请安0\n");
+		scanf_s("%d", &flag);
+		if (flag == 0)
+		{
+			exit(0);
+		}
+		if (flag == 1)
+		{
+			continue;
+		}
+		if (flag == 2)
+		{	
+			menu();
+			break;
+		}
 	}
 	return 0;
 }
