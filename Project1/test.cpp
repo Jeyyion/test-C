@@ -149,6 +149,13 @@ int check_stu_xinxi()
 {
 	struct stu students;
 	FILE *fp;
-	/**明天继续**/
+	errno_t err = (fopen_s(&fp, "F:\stuinfo.txt", "r"));
+	if (err != 0)
+	{
+		printf("文件打开错误\n");
+		exit(0);
+	}
+
+
 
 }
